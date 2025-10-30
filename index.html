@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick-a-Pic! | Choose & Assign Images by Email Address</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper">
+      <h1>Pick-a-Pic!</h1>
+      <p class="tagline">Browse random pics, pick favourites and share galleries.</p>
+    </div>
+  </header>
+
+  <main class="main-content wrapper">
+    <section class="preview-panel" aria-labelledby="current-shot">
+      <div class="panel-header">
+        <h2 id="current-shot">Current Pic</h2>
+        <button type="button" class="primary-button secondary" id="refreshButton" aria-label="Load a different random image">
+          <span class="button-icon" aria-hidden="true">&#8635;</span>
+          <span class="button-label">Next random pic</span>
+        </button>
+      </div>
+      <div class="preview-card" id="previewCard">
+        <div class="image-frame">
+          <div class="loading-overlay" id="imageOverlay">
+            <div class="spinner" aria-hidden="true"></div>
+            <p class="loading-text" id="overlayMessage">Fetching pic</p>
+            <button type="button" class="retry-button" id="retryButton" hidden>Try again</button>
+          </div>
+          <img id="activeImage" alt="Random selection from Picsum Photos" />
+        </div>
+        <div class="image-details" id="imageDetails">
+          <div>
+            <h3 id="imageAuthor">Loading author</h3>
+            <p id="imageDimensions" class="meta">Loading dimensions...</p>
+          </div>
+          <a id="viewSourceLink" href="#" target="_blank" rel="noopener" class="ghost-link">View original</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="assignment-panel" aria-labelledby="assign-photo">
+      <div class="panel-header">
+        <h2 id="assign-photo">Create a gallery
+        <p class="panel-subtitle">Add an email to save and share your favourite random pics!</p>
+      </div>
+
+      <form id="assignmentForm" class="assignment-form" novalidate>
+        <label class="field-label" for="emailInput">Email address:</label>
+        <div class="email-input-group">
+          <input
+            type="email"
+            class="text-input"
+            id="emailInput"
+            name="email"
+            placeholder="e.g. alex@example.com"
+            autocomplete="email"
+            required
+          />
+          <button
+            type="button"
+            class="ghost-button new-gallery-button"
+            id="createGalleryButton"
+          >
+            Add new gallery
+          </button>
+        </div>
+        <div class="email-actions">
+          <button
+            type="button"
+            class="ghost-button email-dropdown-toggle"
+            id="emailDropdownToggle"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+          >
+            Switch gallery
+          </button>
+          <button
+            type="button"
+            class="ghost-button email-clear-button"
+            id="emailClearButton"
+            aria-label="Clear email address"
+          >
+            Clear
+          </button>
+          <ul class="email-dropdown" id="emailDropdown" role="listbox" tabindex="-1" hidden></ul>
+        </div>
+        <p class="input-help">Galleries of favourite pics are stored locally in your browser.</p>
+        <button class="primary-button" type="submit">Add current pic to gallery</button>
+        <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="gallery-panel" aria-labelledby="assigned-gallery">
+      <div class="panel-header">
+        <h2 id="assigned-gallery">Galleries</h2>
+        <p class="panel-subtitle">Click thumbnails for high-res versions of pics.</p>
+      </div>
+      <div id="assignmentList" class="assignment-list empty-state">
+        <p class="empty-copy">No galleries yet. Add an email, create a gallery and save your favourite pics.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-content">
+      <p>Built with <a href="https://picsum.photos/" target="_blank" rel="noopener">Picsum Photos</a> and <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash Photos</a> by <a href="https://alastair-grandison.netmatters-scs.co.uk/" target="_blank" rel="noopener">Techno-Logic-Al</a> 2025. Your favourite pics are saved locally.</p>
+    </div>
+  </footer>
+
+  <script src="dist/app.js"></script>
+</body>
+</html>
+
+
+
+
+
+

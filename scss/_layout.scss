@@ -1,0 +1,36 @@
+.main-content {
+  display: grid;
+  gap: 32px;
+  margin-bottom: 80px;
+}
+
+.preview-panel,
+.assignment-panel,
+.gallery-panel {
+  background: var(--panel-bg);
+  border-radius: 24px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-lg);
+  padding: clamp(24px, 2vw + 16px, 36px);
+  backdrop-filter: blur(20px);
+}
+
+.panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.panel-header h2 {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.panel-subtitle {
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}

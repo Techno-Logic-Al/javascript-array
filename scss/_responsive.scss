@@ -1,0 +1,38 @@
+@media (min-width: 992px) {
+  .main-content {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "preview assignment"
+      "gallery gallery";
+  }
+
+  .preview-panel {
+    grid-area: preview;
+  }
+
+  .assignment-panel {
+    grid-area: assignment;
+    align-self: start;
+    position: sticky;
+    top: 24px;
+  }
+
+  .gallery-panel {
+    grid-area: gallery;
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    padding-top: 48px;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .assignment-card {
+    padding: 18px;
+  }
+}
