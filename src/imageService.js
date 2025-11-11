@@ -7,7 +7,6 @@ import {
   SEED_WIDTH,
   SEED_HEIGHT
 } from './constants.js';
-import { scheduleAssignmentHeightSync } from './layout.js';
 import { addCacheBuster, generateSeed, createProceduralImage, preloadImage } from './utils.js';
 
 export async function loadNextImage() {
@@ -240,12 +239,10 @@ function showOverlay(message, isError, hide) {
       dom.retryButton.setAttribute('hidden', 'hidden');
     }
     dom.imageOverlay.hidden = true;
-    scheduleAssignmentHeightSync();
     return;
   }
 
   dom.imageOverlay.hidden = false;
-  scheduleAssignmentHeightSync();
 
   if (typeof message === 'string') {
     dom.overlayMessage.textContent = message;
