@@ -30,11 +30,8 @@
     currentImage: null,
     pendingPrefetch: null,
     prefetchedImage: null,
-    toastElement: null,
-    heightSyncFrame: null,
     formMessageTimer: null,
-    formMessageFadeTimer: null,
-    toastHideTimer: null
+    formMessageFadeTimer: null
   };
 
   // src/utils.js
@@ -198,136 +195,16 @@
     }
   }
 
-  // src/toast.js
-  function setupToast() {
-    if (state.toastElement) {
-      return;
-    }
-    if (!dom_default.primaryButton && dom_default.assignmentForm) {
-      dom_default.primaryButton = dom_default.assignmentForm.querySelector(".primary-button");
-    }
-    const element = document.createElement("div");
-    element.id = "formToast";
-    element.setAttribute("aria-live", "polite");
-    document.body.appendChild(element);
-    state.toastElement = element;
-  }
-  function showToast(message, type) {
-    setupToast();
-    const toast = state.toastElement;
-    if (!toast) {
-      return;
-    }
-    if (state.toastHideTimer) {
-      window.clearTimeout(state.toastHideTimer);
-      state.toastHideTimer = null;
-    }
-    toast.classList.remove("is-hiding", "error", "success");
-    toast.textContent = message;
-    if (type) {
-      toast.classList.add(type);
-    }
-    toast.classList.add("is-visible");
-    updateToastPosition();
-  }
-  function hideToast() {
-    const toast = state.toastElement;
-    if (!toast) {
-      return;
-    }
-    if (state.toastHideTimer) {
-      window.clearTimeout(state.toastHideTimer);
-      state.toastHideTimer = null;
-    }
-    if (!toast.classList.contains("is-visible") && !toast.classList.contains("is-hiding")) {
-      toast.textContent = "";
-      toast.classList.remove("error", "success");
-      toast.style.left = "";
-      toast.style.top = "";
-      toast.style.width = "";
-      return;
-    }
-    toast.classList.remove("is-visible");
-    toast.classList.add("is-hiding");
-    state.toastHideTimer = window.setTimeout(() => {
-      state.toastHideTimer = null;
-      toast.classList.remove("is-hiding", "error", "success");
-      toast.textContent = "";
-      toast.style.left = "";
-      toast.style.top = "";
-      toast.style.width = "";
-    }, 220);
-  }
-  function updateToastPosition() {
-    const toast = state.toastElement;
-    if (!toast || !toast.classList.contains("is-visible") && !toast.classList.contains("is-hiding")) {
-      return;
-    }
-    if (!dom_default.assignmentForm) {
-      return;
-    }
-    const formRect = dom_default.assignmentForm.getBoundingClientRect();
-    const button = dom_default.primaryButton || (dom_default.assignmentForm ? dom_default.assignmentForm.querySelector(".primary-button") : null);
-    const target = button || dom_default.assignmentForm;
-    const targetRect = target.getBoundingClientRect();
-    const width = Math.min(formRect.width, window.innerWidth - 32);
-    const centeredLeft = formRect.left + (formRect.width - width) / 2;
-    const clampedLeft = Math.min(Math.max(16, centeredLeft), window.innerWidth - width - 16);
-    toast.style.width = `${width}px`;
-    toast.style.left = `${clampedLeft}px`;
-    const preferredTop = targetRect.bottom + 12;
-    const clampedTop = Math.min(preferredTop, window.innerHeight - 64);
-    toast.style.top = `${Math.max(16, clampedTop)}px`;
-  }
-
-  // src/layout.js
-  function scheduleAssignmentHeightSync() {
-    if (state.heightSyncFrame) {
-      return;
-    }
-    state.heightSyncFrame = window.requestAnimationFrame(() => {
-      state.heightSyncFrame = null;
-      syncAssignmentHeight();
-    });
-  }
-  function syncAssignmentHeight() {
-    if (!dom_default.assignmentPanel) {
-      return;
-    }
-    if (window.innerWidth < 992) {
-      dom_default.assignmentPanel.style.minHeight = "";
-      return;
-    }
-    if (!dom_default.previewPanel) {
-      return;
-    }
-    const previewRect = dom_default.previewPanel.getBoundingClientRect();
-    const previewHeight = Math.max(0, Math.ceil(previewRect.height));
-    if (!previewHeight) {
-      dom_default.assignmentPanel.style.minHeight = "";
-      return;
-    }
-    dom_default.assignmentPanel.style.minHeight = `${previewHeight}px`;
-  }
-  function handleViewportChange() {
-    updateToastPosition();
-    scheduleAssignmentHeightSync();
-  }
-
   // src/assignmentRenderer.js
   function renderAssignments() {
     populateEmailDropdown(Object.keys(state.assignments));
     if (!dom_default.assignmentList) {
-      updateToastPosition();
-      scheduleAssignmentHeightSync();
       return;
     }
     const entries = Object.entries(state.assignments);
     if (!entries.length) {
       dom_default.assignmentList.classList.add("empty-state");
       dom_default.assignmentList.innerHTML = '<p class="empty-copy">No galleries yet. Add an email, create a gallery and save your favourite pics.</p>';
-      updateToastPosition();
-      scheduleAssignmentHeightSync();
       return;
     }
     dom_default.assignmentList.classList.remove("empty-state");
@@ -392,8 +269,6 @@
       card.appendChild(grid);
       dom_default.assignmentList.appendChild(card);
     });
-    updateToastPosition();
-    scheduleAssignmentHeightSync();
   }
   function populateEmailDropdown(emailList) {
     if (!dom_default.emailDropdown || !dom_default.emailDropdownToggle) {
@@ -625,11 +500,9 @@
         dom_default.retryButton.setAttribute("hidden", "hidden");
       }
       dom_default.imageOverlay.hidden = true;
-      scheduleAssignmentHeightSync();
       return;
     }
     dom_default.imageOverlay.hidden = false;
-    scheduleAssignmentHeightSync();
     if (typeof message === "string") {
       dom_default.overlayMessage.textContent = message;
     }
@@ -658,18 +531,11 @@
     loadAssignments();
     loadKnownEmails();
     bindEvents();
-    setupToast();
     renderAssignments();
-    updateToastPosition();
-    scheduleAssignmentHeightSync();
     queuePrefetch();
     loadNextImage();
   }
   function bindEvents() {
-    if (dom_default.activeImage) {
-      dom_default.activeImage.addEventListener("load", scheduleAssignmentHeightSync);
-      dom_default.activeImage.addEventListener("error", scheduleAssignmentHeightSync);
-    }
     if (dom_default.assignmentForm) {
       dom_default.assignmentForm.addEventListener("submit", handleAssignment);
     }
@@ -702,8 +568,6 @@
     }
     document.addEventListener("click", handleDocumentClick, true);
     document.addEventListener("keydown", handleDropdownKeydown);
-    window.addEventListener("resize", handleViewportChange, { passive: true });
-    window.addEventListener("scroll", handleViewportChange, { passive: true });
   }
   function handleAssignment(event) {
     event.preventDefault();
@@ -742,7 +606,6 @@
     saveAssignments();
     renderAssignments();
     setFormMessage(`Pic added to ${email}'s gallery.`, "success");
-    loadNextImage();
   }
   function handleCreateGallery(event) {
     event.preventDefault();
@@ -952,8 +815,6 @@
     }
     dom_default.formMessage.classList.remove("is-visible", "is-fading", "error", "success");
     dom_default.formMessage.textContent = "";
-    hideToast();
-    scheduleAssignmentHeightSync();
   }
   function setFormMessage(message, type) {
     if (!dom_default.formMessage) {
@@ -973,12 +834,10 @@
     }
     dom_default.formMessage.textContent = message;
     dom_default.formMessage.classList.add("is-visible");
-    showToast(message, type);
     state.formMessageTimer = window.setTimeout(() => {
       state.formMessageTimer = null;
       initiateFormMessageFade();
     }, 3e3);
-    scheduleAssignmentHeightSync();
   }
   function initiateFormMessageFade() {
     if (!dom_default.formMessage) {
@@ -990,7 +849,6 @@
     }
     dom_default.formMessage.classList.remove("is-visible");
     dom_default.formMessage.classList.add("is-fading");
-    scheduleAssignmentHeightSync();
     state.formMessageFadeTimer = window.setTimeout(() => {
       state.formMessageFadeTimer = null;
       clearFormMessage();
