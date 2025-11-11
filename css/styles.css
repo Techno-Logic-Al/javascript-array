@@ -43,7 +43,7 @@ img {
 }
 
 .site-header {
-  padding: 24px 0;
+  padding: 20px 0;
   text-align: center;
 }
 
@@ -75,7 +75,8 @@ img {
   border-radius: 24px;
   border: 1px solid var(--border-soft);
   box-shadow: var(--shadow-lg);
-  padding: clamp(24px, 2vw + 16px, 36px);
+  padding: clamp(24px, 2vw + 16px, 20px);
+  padding-bottom: clamp(18px, 1.4vw + 12px, 28px);
   -webkit-backdrop-filter: blur(20px);
           backdrop-filter: blur(20px);
 }
@@ -95,7 +96,7 @@ img {
 }
 
 .panel-subtitle {
-  margin-top: 24px;
+  margin-top: 8px;
   color: var(--text-secondary);
   font-size: 0.95rem;
 }
@@ -112,10 +113,12 @@ img {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(9, 12, 30, 0.9);
+  aspect-ratio: 3/2;
 }
 
 .image-frame img {
   width: 100%;
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
   transition: transform var(--transition);
@@ -190,6 +193,7 @@ img {
   align-items: center;
   gap: 12px;
   padding-inline: 6px;
+  margin-top: 0;
 }
 
 .image-details h3 {
@@ -254,10 +258,7 @@ img {
 }
 
 .email-input-group {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
+  display: block;
 }
 
 .new-gallery-button,
@@ -278,9 +279,41 @@ img {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  justify-content: center;
   position: relative;
 }
 
+.email-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.email-actions .ghost-button {
+  width: auto;
+}
+
+@media (max-width: 720px) {
+  .email-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .email-actions .ghost-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 720px) {
+  .email-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .email-actions .ghost-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
 .email-dropdown {
   position: absolute;
   right: 0;
@@ -332,16 +365,16 @@ img {
 }
 
 .form-message {
-  min-height: 18px;
-  margin: 6px 0 0;
+  min-height: 2.75rem;
+  margin: 8px 0 0;
   font-size: 0.9rem;
   font-weight: 500;
+  line-height: 1.35;
   opacity: 0;
   transition: opacity var(--transition);
-}
-
-.form-message:empty {
-  display: none;
+  display: flex;
+  align-items: flex-start;
+  pointer-events: none;
 }
 
 .form-message.is-visible {
@@ -361,12 +394,18 @@ img {
 }
 
 .primary-button {
-  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  padding: clamp(12px, 3vw, 15px) clamp(18px, 3.2vw + 10px, 32px);
   border: none;
   border-radius: 14px;
-  margin-left: 100px;
-  margin-right: 100px;
-  font-size: 1rem;
+  margin: 0 auto;
+  font-size: clamp(0.85rem, 0.6rem + 1.5vw, 1rem);
   font-weight: 600;
   color: #050712;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -399,10 +438,25 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0;
-  padding: 12px 24px;
+  margin-left: auto;
+  margin-right: 0;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  padding: clamp(10px, 2.6vw, 14px) clamp(18px, 3vw + 6px, 30px);
 }
 
+@media (max-width: 720px) {
+  .primary-button.secondary {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+  .primary-button {
+    width: 100%;
+    max-width: none;
+  }
+}
 .primary-button.secondary .button-icon {
   font-size: 1.2rem;
   margin-right: 0;
@@ -493,12 +547,14 @@ img {
 .assignment-card__header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 12px;
 }
 
 .assignment-card__header .email {
   flex: 1 1 auto;
+  min-width: 0;
 }
 
 .gallery-remove-button {
@@ -509,9 +565,33 @@ img {
 .assignment-card .email {
   font-size: 1.05rem;
   font-weight: 600;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  width: auto;
 }
 
+@media (max-width: 720px) {
+  .assignment-card__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .assignment-card__header .email {
+    width: 100%;
+  }
+  .assignment-card .email {
+    width: 100%;
+    max-width: none;
+    white-space: normal;
+  }
+  .assignment-card__header .send-gallery-button,
+  .assignment-card__header .gallery-remove-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
 .thumb-grid {
   display: grid;
   gap: 16px;
@@ -608,51 +688,6 @@ img {
   text-decoration: underline;
 }
 
-#formToast {
-  position: fixed;
-  z-index: 60;
-  pointer-events: none;
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: rgba(10, 14, 32, 0.92);
-  color: var(--text-primary);
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.4;
-  max-width: calc(100vw - 32px);
-  word-break: break-word;
-  box-shadow: 0 22px 48px -24px rgba(8, 15, 35, 0.9);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: opacity var(--transition), transform var(--transition);
-}
-
-#formToast.is-visible,
-#formToast.is-hiding {
-  visibility: visible;
-}
-
-#formToast.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#formToast.is-hiding {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-#formToast.success {
-  background: rgba(125, 240, 177, 0.92);
-  color: #063b24;
-}
-
-#formToast.error {
-  background: rgba(255, 138, 138, 0.92);
-  color: #5b1212;
-}
-
 @media (min-width: 992px) {
   .main-content {
     grid-template-columns: repeat(2, 1fr);
@@ -664,8 +699,6 @@ img {
   .assignment-panel {
     grid-area: assignment;
     align-self: start;
-    position: sticky;
-    top: 24px;
   }
   .gallery-panel {
     grid-area: gallery;
@@ -677,10 +710,26 @@ img {
   }
   .panel-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
   .assignment-card {
     padding: 18px;
+  }
+  .assignment-panel .field-label,
+  .assignment-panel .input-help {
+    text-align: center;
+    width: 100%;
+  }
+  .preview-panel .panel-header,
+  .assignment-panel .panel-header,
+  .gallery-panel .panel-header {
+    text-align: center;
+  }
+  .preview-panel #current-shot,
+  .assignment-panel #assign-photo,
+  .gallery-panel #assigned-gallery {
+    width: 100%;
   }
 }
 @keyframes spin {
