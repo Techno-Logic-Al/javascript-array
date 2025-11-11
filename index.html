@@ -33,7 +33,7 @@
             <p class="loading-text" id="overlayMessage">Fetching pic</p>
             <button type="button" class="retry-button" id="retryButton" hidden>Try again</button>
           </div>
-          <img id="activeImage" alt="Random selection from Picsum Photos" />
+          <img id="activeImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Random selection from Picsum Photos">
         </div>
         <div class="image-details" id="imageDetails">
           <div>
@@ -47,7 +47,9 @@
 
     <section class="assignment-panel" aria-labelledby="assign-photo">
       <div class="panel-header">
-        <h2 id="assign-photo">Create a gallery
+        <h2 id="assign-photo">
+          Create a gallery
+        </h2>
         <p class="panel-subtitle">Add an email to save and share your favourite random pics!</p>
       </div>
 
@@ -62,7 +64,9 @@
             placeholder="e.g. alex@example.com"
             autocomplete="email"
             required
-          />
+          >
+        </div>
+        <div class="email-actions">
           <button
             type="button"
             class="ghost-button new-gallery-button"
@@ -70,25 +74,25 @@
           >
             Add new gallery
           </button>
-        </div>
-        <div class="email-actions">
-          <button
-            type="button"
-            class="ghost-button email-dropdown-toggle"
-            id="emailDropdownToggle"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-          >
-            Switch gallery
-          </button>
-          <button
-            type="button"
-            class="ghost-button email-clear-button"
-            id="emailClearButton"
-            aria-label="Clear email address"
-          >
-            Clear
-          </button>
+          <div class="email-secondary-actions">
+            <button
+              type="button"
+              class="ghost-button email-dropdown-toggle"
+              id="emailDropdownToggle"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              Switch gallery
+            </button>
+            <button
+              type="button"
+              class="ghost-button email-clear-button"
+              id="emailClearButton"
+              aria-label="Clear email address"
+            >
+              Clear
+            </button>
+          </div>
           <ul class="email-dropdown" id="emailDropdown" role="listbox" tabindex="-1" hidden></ul>
         </div>
         <p class="input-help">Galleries of favourite pics are stored locally in your browser.</p>
