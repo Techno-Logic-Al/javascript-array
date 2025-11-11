@@ -7,10 +7,8 @@ import {
   saveAssignments,
   registerKnownEmail
 } from './storage.js';
-import { setupToast, showToast, hideToast, updateToastPosition } from './toast.js';
 import { renderAssignments, populateEmailDropdown } from './assignmentRenderer.js';
 import { loadNextImage, queuePrefetch, getCurrentImage } from './imageService.js';
-import { scheduleAssignmentHeightSync, handleViewportChange as handleViewportLayoutChange } from './layout.js';
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
@@ -22,20 +20,12 @@ function init() {
   loadAssignments();
   loadKnownEmails();
   bindEvents();
-  setupToast();
   renderAssignments();
-  updateToastPosition();
-  scheduleAssignmentHeightSync();
   queuePrefetch();
   loadNextImage();
 }
 
 function bindEvents() {
-  if (dom.activeImage) {
-    dom.activeImage.addEventListener('load', scheduleAssignmentHeightSync);
-    dom.activeImage.addEventListener('error', scheduleAssignmentHeightSync);
-  }
-
   if (dom.assignmentForm) {
     dom.assignmentForm.addEventListener('submit', handleAssignment);
   }
@@ -76,8 +66,6 @@ function bindEvents() {
 
   document.addEventListener('click', handleDocumentClick, true);
   document.addEventListener('keydown', handleDropdownKeydown);
-  window.addEventListener('resize', handleViewportLayoutChange, { passive: true });
-  window.addEventListener('scroll', handleViewportLayoutChange, { passive: true });
 }
 
 function handleAssignment(event) {
@@ -125,7 +113,6 @@ function handleAssignment(event) {
   renderAssignments();
 
   setFormMessage(`Pic added to ${email}'s gallery.`, 'success');
-  loadNextImage();
 }
 
 function handleCreateGallery(event) {
@@ -383,8 +370,6 @@ function clearFormMessage() {
   }
   dom.formMessage.classList.remove('is-visible', 'is-fading', 'error', 'success');
   dom.formMessage.textContent = '';
-  hideToast();
-  scheduleAssignmentHeightSync();
 }
 
 function setFormMessage(message, type) {
@@ -408,12 +393,10 @@ function setFormMessage(message, type) {
 
   dom.formMessage.textContent = message;
   dom.formMessage.classList.add('is-visible');
-  showToast(message, type);
   state.formMessageTimer = window.setTimeout(() => {
     state.formMessageTimer = null;
     initiateFormMessageFade();
   }, 3000);
-  scheduleAssignmentHeightSync();
 }
 
 function initiateFormMessageFade() {
@@ -428,7 +411,6 @@ function initiateFormMessageFade() {
 
   dom.formMessage.classList.remove('is-visible');
   dom.formMessage.classList.add('is-fading');
-  scheduleAssignmentHeightSync();
 
   state.formMessageFadeTimer = window.setTimeout(() => {
     state.formMessageFadeTimer = null;
