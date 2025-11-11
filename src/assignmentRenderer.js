@@ -1,15 +1,11 @@
 import dom from './dom.js';
 import { state } from './state.js';
 import { formatTimestamp, addCacheBuster, validateEmail } from './utils.js';
-import { updateToastPosition } from './toast.js';
-import { scheduleAssignmentHeightSync } from './layout.js';
 
 export function renderAssignments() {
   populateEmailDropdown(Object.keys(state.assignments));
 
   if (!dom.assignmentList) {
-    updateToastPosition();
-    scheduleAssignmentHeightSync();
     return;
   }
 
@@ -19,8 +15,6 @@ export function renderAssignments() {
     dom.assignmentList.classList.add('empty-state');
     dom.assignmentList.innerHTML =
       '<p class="empty-copy">No galleries yet. Add an email, create a gallery and save your favourite pics.</p>';
-    updateToastPosition();
-    scheduleAssignmentHeightSync();
     return;
   }
 
@@ -104,8 +98,6 @@ export function renderAssignments() {
     dom.assignmentList.appendChild(card);
   });
 
-  updateToastPosition();
-  scheduleAssignmentHeightSync();
 }
 
 export function populateEmailDropdown(emailList) {
