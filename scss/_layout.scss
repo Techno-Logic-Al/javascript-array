@@ -11,7 +11,8 @@
   border-radius: 24px;
   border: 1px solid var(--border-soft);
   box-shadow: var(--shadow-lg);
-  padding: clamp(24px, 2vw + 16px, 36px);
+  padding: clamp(24px, 2vw + 16px, 20px);
+  padding-bottom: clamp(18px, 1.4vw + 12px, 28px);
   backdrop-filter: blur(20px);
 }
 
@@ -30,7 +31,7 @@
 }
 
 .panel-subtitle {
-  margin-top: 24px;
+  margin-top: 8px;
   color: var(--text-secondary);
   font-size: 0.95rem;
 }
