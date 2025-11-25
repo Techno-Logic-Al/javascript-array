@@ -587,6 +587,14 @@
       return;
     }
     registerKnownEmail(email);
+    const existingAssignments = Array.isArray(state.assignments[email]) ? state.assignments[email] : [];
+    const isDuplicate = existingAssignments.some(
+      (assignment) => assignment && assignment.id === currentImage.id
+    );
+    if (isDuplicate) {
+      setFormMessage("The same pic can't be assigned to this email more than once. Fetch a new pic to add another.", "error");
+      return;
+    }
     const record = {
       id: currentImage.id,
       author: currentImage.author,
